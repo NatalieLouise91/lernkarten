@@ -1,22 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
+import { StatusBar } from "expo-status-bar";
+import { Provider, useSelector, useDispatch } from "react-redux";
+import store, { selectVocabs, addVocab, removeVocab } from "./utils/store";
+import Navigation from "./navigation";
+import {
+  useFonts,
+  Ubuntu_400Regular,
+  Ubuntu_700Bold,
+  Ubuntu_500Medium,
+} from "@expo-google-fonts/ubuntu";
 
 export default function App() {
-  const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
-
-  if (!isLoadingComplete) {
+  let [fontsLoaded] = useFonts({
+    Ubuntu_400Regular,
+    Ubuntu_700Bold,
+    Ubuntu_500Medium,
+  });
+  if (!fontsLoaded) {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
+      <Provider store={store}>
+        <Navigation />
         <StatusBar />
-      </SafeAreaProvider>
+      </Provider>
     );
   }
 }
