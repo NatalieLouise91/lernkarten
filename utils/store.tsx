@@ -8,20 +8,32 @@ interface Vocab {
   sentence: string;
 }
 
+interface User {
+  email: string;
+}
+
+interface UserSliceState {
+  users: User[];
+}
+
+const initialUserState: UserSliceState = {
+    users: [],
+};
+
 interface VocabSliceState {
   vocabs: Vocab[];
 }
 
-const initialState: VocabSliceState = {
+const initialVocabState: VocabSliceState = {
   vocabs: [],
 };
 
 export const vocabSlice = createSlice({
   name: "vocab",
-  initialState,
+  initialState : initialVocabState,
   reducers: {
     addVocab: (state, action: PayloadAction<Vocab>) => {
-        let vocab = action.payload;
+      let vocab = action.payload;
       state.vocabs = [
         ...state.vocabs,
         {
@@ -39,11 +51,29 @@ export const vocabSlice = createSlice({
   },
 });
 
+export const userSlice = createSlice({
+    name: "currentUser",
+    initialState : initialUserState,
+    reducers: {
+        addCurrentUser: (state, action: PayloadAction<User>) => {
+            let user = action.payload;
+            state.users = [
+                ...state.users,
+                {
+                  email: user.email,
+                }
+            ]
+        }
+    }
+})
+
 export const { addVocab, removeVocab } = vocabSlice.actions;
+export const { addCurrentUser } = userSlice.actions;
 
 const store = configureStore({
   reducer: {
     vocabs: vocabSlice.reducer,
+    currentUsers: userSlice.reducer,
   },
 });
 
