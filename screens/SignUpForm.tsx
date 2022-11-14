@@ -30,13 +30,13 @@ const SignUpForm: FunctionComponent<Props> = ({ navigation }) => {
     username: string;
     email: string;
     password: string;
-    confirm_password: string;
+    password_confirmation: string;
   }
   const initialFormData: InitialFormData = {
     username: "",
     email: "",
     password: "",
-    confirm_password: "",
+    password_confirmation: "",
   };
 
   interface ErrorsObject {
@@ -59,7 +59,7 @@ const SignUpForm: FunctionComponent<Props> = ({ navigation }) => {
       username: username,
       email: email,
       password: password,
-      confirm_password: confirmPassword,
+      password_confirmation: confirmPassword,
     });
   }
 

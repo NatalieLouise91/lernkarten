@@ -13,11 +13,11 @@ interface User {
 }
 
 interface UserSliceState {
-  users: User[];
+  user: User;
 }
 
 const initialUserState: UserSliceState = {
-    users: [],
+  user: { email: "" },
 };
 
 interface VocabSliceState {
@@ -30,7 +30,7 @@ const initialVocabState: VocabSliceState = {
 
 export const vocabSlice = createSlice({
   name: "vocab",
-  initialState : initialVocabState,
+  initialState: initialVocabState,
   reducers: {
     addVocab: (state, action: PayloadAction<Vocab>) => {
       let vocab = action.payload;
@@ -52,20 +52,17 @@ export const vocabSlice = createSlice({
 });
 
 export const userSlice = createSlice({
-    name: "currentUser",
-    initialState : initialUserState,
-    reducers: {
-        addCurrentUser: (state, action: PayloadAction<User>) => {
-            let user = action.payload;
-            state.users = [
-                ...state.users,
-                {
-                  email: user.email,
-                }
-            ]
-        }
-    }
-})
+  name: "currentUser",
+  initialState: initialUserState,
+  reducers: {
+    addCurrentUser: (state, action: PayloadAction<User>) => {
+      let user = action.payload;
+      state.user = {
+        email: user.email,
+      };
+    },
+  },
+});
 
 export const { addVocab, removeVocab } = vocabSlice.actions;
 export const { addCurrentUser } = userSlice.actions;
@@ -80,5 +77,6 @@ const store = configureStore({
 type RootState = ReturnType<typeof store.getState>;
 
 export const selectVocabs = (state: RootState) => state.vocabs.vocabs;
+export const selectCurrentUser = (state: RootState) => state.currentUsers;
 
 export default store;

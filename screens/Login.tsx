@@ -8,6 +8,8 @@ import { BrandSystem } from "../constants/BrandSystem";
 import { InputTextField } from "../components/InputTextField";
 import { Button } from "../components/Button";
 import { addCurrentUser } from "../utils/store";
+import { logIn } from "../services/authServices";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const MainContainer = styled(sharedComponents)`
   width: 100%;
@@ -66,7 +68,15 @@ const Login: FunctionComponent<Props> = ({ navigation }) => {
   useEffect(() => {
     if (errors === null && isSubmit === true) {
         dispatch(addCurrentUser({ email: email }));
-      navigation.navigate("Home");
+        logIn(formData).then((result) => {
+            if (result.status === 200) {
+              AsyncStorage.setItem("token", result.data.token);
+              navigation.navigate("Home");
+            }
+          })
+          .catch((err) => {
+            console.warn(err);
+          });
     }
   }, [formData, navigation]);
 

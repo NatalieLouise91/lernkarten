@@ -6,6 +6,8 @@ import { BrandSystem } from "../constants/BrandSystem";
 import { sharedComponents } from "../constants/Layout";
 import { Button } from "../components/Button";
 import { Heading } from "../components/Heading";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../utils/store";
 
 const MainContainer = styled(sharedComponents)`
   height: 100%;
@@ -19,8 +21,20 @@ const ButtonWrapper = styled.View`
 `;
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 const Home: FunctionComponent<Props> = ({ navigation }) => {
+  const currentUser = useSelector(selectCurrentUser);
+  let displayUser = currentUser.user.email;
   return (
     <MainContainer>
+      {displayUser && (
+        <Heading
+          text={`welcome ${displayUser}!`}
+          textFont="Ubuntu_700Bold"
+          textSize={10}
+          lineHeight={15}
+          textTransform="lowercase"
+          textColor={BrandSystem.charcoal}
+        />
+      )}
       <Heading
         text="Test your knowledge or create a new card"
         textFont="Ubuntu_700Bold"
