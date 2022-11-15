@@ -67,10 +67,10 @@ const Login: FunctionComponent<Props> = ({ navigation }) => {
 
   useEffect(() => {
     if (errors === null && isSubmit === true) {
-        dispatch(addCurrentUser({ email: email }));
         logIn(formData).then((result) => {
             if (result.status === 200) {
               AsyncStorage.setItem("token", result.data.token);
+              dispatch(addCurrentUser({ username: result.data.username, id: result.data.id }));
               navigation.navigate("Home");
             }
           })

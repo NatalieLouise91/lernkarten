@@ -10,11 +10,12 @@ export const logIn = async (data: LoginFormData) => {
     const result = await lernKartenAPI("/auth/login", {
       method: "POST",
       headers: {
-        accept: "application/json",
+        "accept": "application/json",
         "Content-Type": "application/json",
       },
       data: data,
     });
+    console.warn(result)
     return result;
   } catch (error: any) {
     return error.response.data;
@@ -33,7 +34,7 @@ export const signUp = async (data: SignUpFormData) => {
     const result = await lernKartenAPI("/auth/register", {
       method: "POST",
       headers: {
-        accept: "application/json",
+        "accept": "application/json",
         "Content-Type": "application/json",
       },
       data: data,
@@ -44,7 +45,7 @@ export const signUp = async (data: SignUpFormData) => {
   }
 };
 
-export const signOut = (data: any) => {
+export const signOut = () => {
   AsyncStorage.clear();
   return "Logged out";
 };

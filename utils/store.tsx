@@ -6,10 +6,12 @@ interface Vocab {
   definition: string;
   gender: string;
   sentence: string;
+  user_id: number;
 }
 
 interface User {
-  email: string;
+  username: string;
+  id: number;
 }
 
 interface UserSliceState {
@@ -17,7 +19,7 @@ interface UserSliceState {
 }
 
 const initialUserState: UserSliceState = {
-  user: { email: "" },
+  user: { username: "", id: 0 },
 };
 
 interface VocabSliceState {
@@ -37,11 +39,12 @@ export const vocabSlice = createSlice({
       state.vocabs = [
         ...state.vocabs,
         {
-          id: state.vocabs.length,
-          word: vocab.word,
-          definition: vocab.definition,
-          gender: vocab.gender,
-          sentence: vocab.sentence,
+            id: state.vocabs.length,
+            word: vocab.word,
+            definition: vocab.definition,
+            gender: vocab.gender,
+            sentence: vocab.sentence,
+            user_id: vocab.user_id,
         },
       ];
     },
@@ -58,7 +61,8 @@ export const userSlice = createSlice({
     addCurrentUser: (state, action: PayloadAction<User>) => {
       let user = action.payload;
       state.user = {
-        email: user.email,
+        username: user.username,
+        id: user.id,
       };
     },
   },

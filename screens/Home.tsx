@@ -22,7 +22,7 @@ const ButtonWrapper = styled.View`
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 const Home: FunctionComponent<Props> = ({ navigation }) => {
   const currentUser = useSelector(selectCurrentUser);
-  let displayUser = currentUser.user.email;
+  let displayUser = currentUser.user.username;
   return (
     <MainContainer>
       {displayUser && (

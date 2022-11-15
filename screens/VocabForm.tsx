@@ -3,12 +3,15 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/index";
 import styled from "styled-components/native";
 import { useDispatch } from "react-redux";
-import { addVocab } from "../utils/store";
+import { addVocab, selectVocabs } from "../utils/store";
 import { sharedComponents } from "../constants/Layout";
 import { BrandSystem } from "../constants/BrandSystem";
 import { InputTextField } from "../components/InputTextField";
 import { Button } from "../components/Button";
 import { Heading } from "../components/Heading";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../utils/store";
+import { createCard } from "../services/cardServices";
 
 const MainContainer = styled(sharedComponents)`
   width: 100%;
@@ -25,19 +28,37 @@ const VocabForm: FunctionComponent<Props> = ({ navigation }) => {
   const dispatch = useDispatch();
 
   interface InitialFormData {
+    word: string;
+    definition: string;
+    gender: string;
+    sentence: string;
+    user_id: number;
+  }
+  const initialFormData: InitialFormData = {
+    word: "",
+    definition: "",
+    gender: "",
+    sentence: "",
+    user_id: 0,
+  };
+
+  interface DispatchData {
     id: number;
     word: string;
     definition: string;
     gender: string;
     sentence: string;
+    user_id: number;
   }
-  const initialFormData: InitialFormData = {
+
+  const initialDispatchData = {
     id: 0,
     word: "",
     definition: "",
     gender: "",
     sentence: "",
-  };
+    user_id: 0,
+  }
 
   interface ErrorsObject {
     word: string;
@@ -47,35 +68,54 @@ const VocabForm: FunctionComponent<Props> = ({ navigation }) => {
   }
 
   const [formData, setFormData] = useState(initialFormData);
+  const [dispatchData, setDispatchData] = useState(initialDispatchData);
   const [id, setId] = useState<number>(0);
   const [word, setWord] = useState<string>("");
   const [definition, setDefinition] = useState<string>("");
   const [gender, setGender] = useState<string>("");
   const [sentence, setSentence] = useState<string>("");
   const [errors, setErrors] = useState<ErrorsObject | null>(null);
-  const [isSubmit, setIsSubmit] = useState<Boolean>(false)
+  const [isSubmit, setIsSubmit] = useState<Boolean>(false);
+
+  const currentUser = useSelector(selectCurrentUser);
+  const vocabs = useSelector(selectVocabs);
 
   function handleFormData() {
     setFormData({
-      id: id + 1,
       word: word,
       definition: definition,
       gender: gender,
       sentence: sentence,
+      user_id: currentUser.user.id,
     });
+    setDispatchData({
+      id: vocabs.length + 1,
+      word: word,
+      definition: definition,
+      gender: gender,
+      sentence: sentence,
+      user_id: currentUser.user.id,
+    })
   }
 
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     handleFormData();
     setIsSubmit(true);
-
   }
 
   useEffect(() => {
     if (errors === null && isSubmit === true) {
-      dispatch(addVocab(formData));
-      navigation.navigate("Home");
+      createCard(formData)
+        .then((result) => {
+          if (result === 201) {
+            dispatch(addVocab(dispatchData));
+            navigation.navigate("Home");
+          }
+        })
+        .catch((err) => {
+          console.warn(err);
+        });
     }
   }, [formData, navigation]);
 
