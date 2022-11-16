@@ -39,8 +39,10 @@ export const signUp = async (data: SignUpFormData) => {
       },
       data: data,
     });
+    console.warn(result);
     return result;
   } catch (error: any) {
+    console.warn(error)
     return error.response.data;
   }
 };

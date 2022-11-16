@@ -1,15 +1,14 @@
 import lernKartenAPI from "../config/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const getCards = async (data: any) => {
+export const getCardsByUser = async (data: any) => {
     try {
-        const result = await lernKartenAPI("/cards", {
+        const result = await lernKartenAPI(`/cards`, {
             method: "GET",
             headers: {
                 "accept": "application/json",
                 "Content-Type": "application/json",
             },
-            data: data,
         });
         return result;
     } catch (error: any) {

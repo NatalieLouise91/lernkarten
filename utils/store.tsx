@@ -34,6 +34,10 @@ export const vocabSlice = createSlice({
   name: "vocab",
   initialState: initialVocabState,
   reducers: {
+    setVocabs: (state, action: PayloadAction<Vocab[]>) => {
+     let vocabs = action.payload;
+     state.vocabs = [...vocabs]
+    },
     addVocab: (state, action: PayloadAction<Vocab>) => {
       let vocab = action.payload;
       state.vocabs = [
@@ -68,7 +72,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { addVocab, removeVocab } = vocabSlice.actions;
+export const { setVocabs, addVocab, removeVocab } = vocabSlice.actions;
 export const { addCurrentUser } = userSlice.actions;
 
 const store = configureStore({
