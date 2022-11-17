@@ -58,7 +58,7 @@ const VocabForm: FunctionComponent<Props> = ({ navigation }) => {
     gender: "",
     sentence: "",
     user_id: 0,
-  }
+  };
 
   interface ErrorsObject {
     word: string;
@@ -95,7 +95,7 @@ const VocabForm: FunctionComponent<Props> = ({ navigation }) => {
       gender: gender,
       sentence: sentence,
       user_id: currentUser.user.id,
-    })
+    });
   }
 
   function handleSubmit(event: React.SyntheticEvent) {
@@ -108,7 +108,7 @@ const VocabForm: FunctionComponent<Props> = ({ navigation }) => {
     if (errors === null && isSubmit === true) {
       createCard(formData)
         .then((result) => {
-          if (result === 201) {
+          if (result.status === 201) {
             dispatch(addVocab(dispatchData));
             navigation.navigate("Home");
           }

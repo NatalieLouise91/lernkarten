@@ -24,23 +24,6 @@ const ButtonWrapper = styled.View`
   justify-content: space-between;
 `;
 
-const CardContainer = styled.View`
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Card = styled.View`
-  width: 100%;
-  height: 100px;
-  justify-content: center;
-  border-radius: 25% 25%;
-  margin: 1%;
-  border: 2px;
-  border-color: ${BrandSystem.charcoal};
-  background: ${BrandSystem.lightGrey};
-`;
-
 interface CardObject {
   created_at: string;
   definition: string;
@@ -59,7 +42,7 @@ const Test: FunctionComponent<Props> = ({ navigation }) => {
   const currentUser = useSelector(selectCurrentUser);
   const [cards, setCards] = useState<CardObject[]>([]);
   const screen = Dimensions.get('screen');
-
+console.warn(vocabs);
   useEffect(() => {
     getCardsByUser(currentUser.user.id)
       .then((result) => {
@@ -112,7 +95,7 @@ const Test: FunctionComponent<Props> = ({ navigation }) => {
             text={data.sentence}
             textFont="Ubuntu_500Medium"
             lineHeight={30}
-            textTransform="capitalize"
+            textTransform="none"
             textSize={25}
             textColor={BrandSystem.charcoal}
           />
